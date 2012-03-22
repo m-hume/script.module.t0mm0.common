@@ -594,6 +594,7 @@ class Addon:
         listitem.setProperty('IsPlayable', 'true')
         listitem.setProperty('fanart_image', fanart)
         if contextmenu_items:
+            self.log_debug('adding CM: %s' % contextmenu_items)
             listitem.addContextMenuItems(contextmenu_items, replaceItems=context_replace)        
         if playlist is not False:
             self.log_debug('adding item: %s - %s to playlist' % \
