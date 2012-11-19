@@ -242,8 +242,8 @@ class Addon:
         Kwargs:
             level (int): The XBMC log level to write at.
         '''
-        msg = unicodedata.normalize('NFKD', unicode(msg)).encode('ascii',
-                                                                 'ignore')
+        #msg = unicodedata.normalize('NFKD', unicode(msg)).encode('ascii',
+        #                                                         'ignore')
         xbmc.log('%s: %s' % (self.get_name(), msg), level)
         
 
