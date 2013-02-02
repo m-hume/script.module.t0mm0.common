@@ -215,7 +215,15 @@ class Addon:
         Retuns:
             A string containing a fully formed ``plugin://`` URL.
         '''
-        return self.url + '?' + urllib.urlencode(queries)
+        out_dict = {}
+        for k, v in queries.iteritems():
+            if isinstance(v, unicode):
+                v = v.encode('utf8')
+            elif isinstance(v, str):
+                # Must be encoded in UTF-8
+                v.decode('utf8')
+            out_dict[k] = v
+        return self.url + '?' + urllib.urlencode(out_dict)
 
 
     def log(self, msg, level=xbmc.LOGNOTICE):
@@ -242,8 +250,6 @@ class Addon:
         Kwargs:
             level (int): The XBMC log level to write at.
         '''
-        msg = unicodedata.normalize('NFKD', unicode(msg)).encode('ascii',
-                                                                 'ignore')
         xbmc.log('%s: %s' % (self.get_name(), msg), level)
         
 
@@ -577,7 +583,7 @@ class Addon:
             be added to the list of entries to be displayed in this directory. 
             If a playlist object is passed (see :meth:`get_playlist`) then 
             the item will be added to the playlist instead
-    
+
             item_type (str): The type of item to add (eg. 'music', 'video' or
             'pictures')
         '''
@@ -594,7 +600,6 @@ class Addon:
         listitem.setProperty('IsPlayable', 'true')
         listitem.setProperty('fanart_image', fanart)
         if contextmenu_items:
-            self.log_debug('adding CM: %s' % contextmenu_items)
             listitem.addContextMenuItems(contextmenu_items, replaceItems=context_replace)        
         if playlist is not False:
             self.log_debug('adding item: %s - %s to playlist' % \
